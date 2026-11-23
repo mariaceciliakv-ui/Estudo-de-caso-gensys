@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel de Auditoria — GenPaper S.A.</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --blue: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --red: #b91c1c;
+      --red-bg: #fef2f2;
+      --green: #15803d;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #fff;
+      padding: 22px 26px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      margin: 0 0 6px 0;
+      font-size: 22px;
+    }
+
+    header p {
+      margin: 0;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--ink);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .tab-btn.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    .card h2 {
+      margin: 0 0 12px 0;
+      font-size: 17px;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .kpi {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .kpi small {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .kpi strong {
+      font-size: 16px;
+    }
+
+    .kpi.danger strong { color: var(--red); }
+    .kpi.ok strong { color: var(--green); }
+
+    .answer-box {
+      padding: 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .answer-blue {
+      background: var(--blue-bg);
+      border-left: 4px solid var(--blue);
+    }
+
+    .answer-red {
+      background: var(--red-bg);
+      border-left: 4px solid var(--red);
+    }
+
+    .steps {
+      margin: 10px 0 0 0;
+      padding-left: 18px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .steps li {
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 Painel de Auditoria — GenPaper S.A.</h1>
+      <p>Respostas diretas e trilha de evidências (Case 1: Qualidade 10/01/2026 | Case 2: Química Sul 11–12/01/2026)</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showTab('todos', this)">Visão Completa</button>
+      <button class="tab-btn" onclick="showTab('case1', this)">Case 1 — Qualidade (10/01)</button>
+      <button class="tab-btn" onclick="showTab('case2', this)">Case 2 — Química Sul (11–12/01)</button>
+    </div>
+
+    <!-- CASE 1 -->
+    <section id="sec-case1" class="section active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>🏭 Case 1 — Resposta e Causa Raiz (10/01/2026)</h2>
+
+          <div class="kpis">
+            <div class="kpi">
+              <small>Máquina</small>
+              <strong>Secadora #02</strong>
+            </div>
+            <div class="kpi danger">
+              <small>Pico Térmico</small>
+              <strong>248,5 °C</strong>
+            </div>
+            <div class="kpi ok">
+              <small>Tensão Elétrica</small>
+              <strong>218–222 V</strong>
+            </div>
+          </div>
+
+          <div class="answer-box answer-blue">
+            <strong>1. Qual máquina falhou?</strong> A máquina de secagem/calandra do lote devolvido de 10/01/2026.<br>
+            <strong>2. Causa Técnica:</strong> Excesso térmico (superaquecimento acima do limite operacional), explicando o papel quebradiço e escurecido — e não oscilação de energia.<br>
+            <strong>3. Causa Operacional:</strong> Falha no acompanhamento/intervenção durante o turno ao manter a operação sob alerta térmico sem interromper ou ajustar a linha a tempo.
+          </div>
+
+          <strong>Como chegamos a essa resposta:</strong>
+          <ol class="steps">
+            <li>Filtramos os registros do lote devolvido de <strong>10/01/2026</strong> e cruzamos o ID do lote com os logs de máquinas.</li>
+            <li>Comparamos a curva de <strong>temperatura</strong> com a curva de <strong>tensão/energia</strong> no mesmo horário.</li>
+            <li>Cruzamos os horários de pico/alarme com os registros de <strong>turno e operação</strong>.</li>
+          </ol>
+          <p class="hint">*Substitua os valores de exemplo pelos números exatos extraídos dos JSONs do GenSys.</p>
+        </div>
+
+        <div class="card">
+          <h2>📈 Evidência Térmica x Limite (Case 1)</h2>
+          <canvas id="chartCase1" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE 2 -->
+    <section id="sec-case2" class="section active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>💰 Case 2 — Conciliação Física x Financeira (Química Sul)</h2>
+
+          <div class="kpis">
+            <div class="kpi">
+              <small>Cobrado (NFs)</small>
+              <strong>16.000 kg</strong>
+            </div>
+            <div class="kpi">
+              <small>Balança Real</small>
+              <strong>2.000 kg</strong>
+            </div>
+            <div class="kpi danger">
+              <small>Divergência</small>
+              <strong>14.000 kg</strong>
+            </div>
+          </div>
+
+          <div class="answer-box answer-red">
+            <strong>Diagnóstico ao CFO (Sr. Tanaka):</strong> Há divergência severa entre o faturamento/pagamento (16 t em 11/01 e 12/01) e a entrada física real na portaria/tanque (&lt; 10% de nível). O cruzamento entre NF, balança (<code>Entrada - Saída</code>) e estoque do tanque indica <strong>desvio de carga / possível fraude ou falha grave de controle</strong> a ser apurada com os comprovantes de pesagem e descarga.
+          </div>
+
+          <strong>Como chegamos a essa resposta:</strong>
+          <ol class="steps">
+            <li><strong>Contabilidade:</strong> Somamos as quantidades (kg) das NFs da Química Sul em <strong>11/01</strong> e <strong>12/01</strong>.</li>
+            <li><strong>Logística (Portaria):</strong> Calculamos o <strong>Peso Líquido Real = Entrada - Saída</strong> na balança para cada NF.</li>
+            <li><strong>Insumos (Tanque):</strong> Confrontamos o saldo físico/percentual (&lt; 10%) com o que deveria ter entrado no período.</li>
+          </ol>
+
+          <table>
+            <thead>
+              <tr>
+                <th>NF</th>
+                <th>Data</th>
+                <th>Qtd NF (kg)</th>
+                <th>Entrada (kg)</th>
+                <th>Saída (kg)</th>
+                <th>Líquido Real (kg)</th>
+                <th>Divergência (kg)</th>
+              </tr>
+            </thead>
+            <tbody id="tabela-c2-body"></tbody>
+          </table>
+          <p class="hint">*Ajuste as linhas no script JS abaixo com os valores reais extraídos do GenSys 2.0.</p>
+        </div>
+
+        <div class="card">
+          <h2>⚖️ Faturado vs. Peso Real na Balança (Case 2)</h2>
+          <canvas id="chartCase2" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Dados editáveis do Case 2 (substitua pelos valores reais do GenSys 2.0)
+    const dadosCase2 = [
+      { nf: "NF-101", data: "11/01/2026", qtdNf: 8000, entrada: 18000, saida: 18000 },
+      { nf: "NF-102", data: "12/01/2026", qtdNf: 8000, entrada: 17500, saida: 15500 }
+    ];
+
+    const tbody = document.getElementById("tabela-c2-body");
+    const labelsNf = [];
+    const cobradoArr = [];
+    const realArr = [];
+
+    dadosCase2.forEach(item => {
+      const liquidoReal = Math.abs(item.entrada - item.saida);
+      const divergencia = item.qtdNf - liquidoReal;
+
+      labelsNf.push(`${item.nf} (${item.data})`);
+      cobradoArr.push(item.qtdNf);
+      realArr.push(liquidoReal);
+
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${item.nf}</td>
+        <td>${item.data}</td>
+        <td>${item.qtdNf.toLocaleString("pt-BR")}</td>
+        <td>${item.entrada.toLocaleString("pt-BR")}</td>
+        <td>${item.saida.toLocaleString("pt-BR")}</td>
+        <td>${liquidoReal.toLocaleString("pt-BR")}</td>
+        <td><strong>${divergencia.toLocaleString("pt-BR")}</strong></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    new Chart(document.getElementById("chartCase1"), {
+      type: "bar",
+      data: {
+        labels: ["Limite Seguro (°C)", "Pico Registrado (°C)"],
+        datasets: [{
+          label: "Temperatura (°C)",
+          data: [195, 248.5],
+          backgroundColor: ["#2563eb", "#dc2626"]
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById("chartCase2"), {
+      type: "bar",
+      data: {
+        labels: labelsNf,
+        datasets: [
+          { label: "Cobrado na NF (kg)", data: cobradoArr, backgroundColor: "#1e3a8a" },
+          { label: "Peso Líquido Real (kg)", data: realArr, backgroundColor: "#16a34a" }
+        ]
+      },
+      options: { responsive: true }
+    });
+
+    function showTab(aba, btn) {
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const s1 = document.getElementById("sec-case1");
+      const s2 = document.getElementById("sec-case2");
+
+      if (aba === "todos") {
+        s1.classList.add("active");
+        s2.classList.add("active");
+      } else if (aba === "case1") {
+        s1.classList.add("active");
+        s2.classList.remove("active");
+      } else {
+        s1.classList.remove("active");
+        s2.classList.add("active");
+      }
+    }
+  </script>
+</body>
+</html>
